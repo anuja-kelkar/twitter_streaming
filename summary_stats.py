@@ -9,7 +9,7 @@ def get_num_unique_users_by_hashtag():
     #Number unique users by #
     get_hashtags_sql_str = "select tweet_by_user_id, hashtags from tweets"
     hashtags_df = SummaryStatsUtil.extract_data_into_df(get_hashtags_sql_str)
-    tracking_hashtags = ["protectdreamers", "cutthecurve", "edtech", "edreform", "STEM", "edchat"]
+    tracking_hashtags = ["hashtag1", "hashtag2"]
     hashtags_user_usage = dict(zip(tracking_hashtags, [0, 0, 0, 0, 0, 0]))
 
     uniq_users = np.unique(hashtags_df['tweet_by_user_id'])
@@ -42,7 +42,7 @@ def get_num_unique_tweets_by_hashtag():
     #Number tweets by #
     get_hashtags_sql_str = "select tweet_by_user_id, hashtags from tweets"
     hashtags_df = SummaryStatsUtil.extract_data_into_df(get_hashtags_sql_str)
-    tracking_hashtags = ["protectdreamers", "cutthecurve", "edtech", "edreform", "STEM", "edchat"]
+    tracking_hashtags = ["hashtag1", "hashtag2"]
     hashtags_tweet_usage = dict(zip(tracking_hashtags, [0, 0, 0, 0, 0, 0]))
 
     for idx, row in hashtags_df.iterrows():
@@ -71,7 +71,7 @@ def get_top_n_tweets_by_hashtag(n):
     #Top N tweets by #
     get_hashtags_sql_str = "select hashtags, text from tweets"
     hashtags_df = SummaryStatsUtil.extract_data_into_df(get_hashtags_sql_str)
-    tracking_hashtags = ['protectdreamers', 'cutthecurve', 'edtech', 'edreform', 'STEM', 'edchat']
+    tracking_hashtags = ['hashtag1', 'hashtag2']
     hashtags_tweet_text = {}
 
     for idx, row in hashtags_df.iterrows():
