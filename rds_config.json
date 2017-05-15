@@ -1,0 +1,6 @@
+{"host": "hostname",
+ "dbname": "dbname",
+ "username":"uname",
+ "password": "pwd",
+ "port": 3306
+}
