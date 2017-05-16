@@ -1,0 +1,4 @@
+tweepy==3.5.0
+pandas
+matplotlib
+PyMySQL
