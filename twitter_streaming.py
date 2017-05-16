@@ -111,12 +111,6 @@ class StdOutListener(StreamListener):
     """
 
     def on_data(self, data):
-        #add to file
-        dt_now = datetime.now().date()
-        f = open('data/tweet_data_' + str(dt_now) + '.txt', 'a')
-        f.write(data)
-        f.close()
-
         #add to mysqldb
         d = json.loads(data)
         if 'text' in d:
