@@ -2,7 +2,7 @@ import pymysql
 import pandas as pd
 import json
 
-with open('local_rds_config.json', 'r') as f:
+with open('rds_config.json', 'r') as f:
     rds_config = json.load(f)
 
 #db connection details
@@ -19,7 +19,7 @@ def fetch_results_from_db(sql_str):
                              password=passwd,
                              port=port,
                              db=dbname,
-                             charset='utf8')
+                             charset='utf8mb4')
 
     try:
         with conn.cursor() as cursor:

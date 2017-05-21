@@ -1,6 +1,6 @@
-{"host": "hostname",
- "dbname": "dbname",
- "username":"uname",
- "password": "pwd",
+{"host": "localhost",
+ "dbname": "tweets_mothersday",
+ "username":"root",
+ "password": "password",
  "port": 3306
 }

@@ -1,4 +1,4 @@
-import summary_stats_util as SummaryStatsUtil
+import util as Util
 import json
 import numpy as np
 import pandas as pd
@@ -8,7 +8,7 @@ from datetime import datetime
 def get_num_unique_users_by_hashtag():
     #Number unique users by #
     get_hashtags_sql_str = "select tweet_by_user_id, hashtags from tweets"
-    hashtags_df = SummaryStatsUtil.extract_data_into_df(get_hashtags_sql_str)
+    hashtags_df = Util.extract_data_into_df(get_hashtags_sql_str)
     tracking_hashtags = ["hashtag1", "hashtag2"]
     hashtags_user_usage = dict(zip(tracking_hashtags, [0, 0, 0, 0, 0, 0]))
 
@@ -17,11 +17,11 @@ def get_num_unique_users_by_hashtag():
     for u in uniq_users:
         user_tweets = hashtags_df[hashtags_df['tweet_by_user_id'] == u]
         for idx, row in user_tweets.iterrows():
-            if SummaryStatsUtil.is_json(row['hashtags']):
+            if Util.is_json(row['hashtags']):
                 tweet_htags = json.loads(row['hashtags'])
                 tr_htags_present = []
                 for s in tweet_htags:
-                    if SummaryStatsUtil.is_ascii(s):
+                    if Util.is_ascii(s):
                         if s in tracking_hashtags:
                             tr_htags_present.append(s)
 
@@ -33,7 +33,7 @@ def get_num_unique_users_by_hashtag():
 def get_num_unique_users_by_location():
     #Number unique users by location
     sql_str = "select count(user_id), location from twitter_users group by location order by count(user_id) desc"
-    res = SummaryStatsUtil.extract_data_into_df(sql_str)
+    res = Util.extract_data_into_df(sql_str)
     num_users_by_loc = json.dumps(dict(zip(list(res['location'].values), list(res['count(user_id)'].values))))
     return num_users_by_loc
 
@@ -41,16 +41,16 @@ def get_num_unique_users_by_location():
 def get_num_unique_tweets_by_hashtag():
     #Number tweets by #
     get_hashtags_sql_str = "select tweet_by_user_id, hashtags from tweets"
-    hashtags_df = SummaryStatsUtil.extract_data_into_df(get_hashtags_sql_str)
+    hashtags_df = Util.extract_data_into_df(get_hashtags_sql_str)
     tracking_hashtags = ["hashtag1", "hashtag2"]
     hashtags_tweet_usage = dict(zip(tracking_hashtags, [0, 0, 0, 0, 0, 0]))
 
     for idx, row in hashtags_df.iterrows():
-        if SummaryStatsUtil.is_json(row['hashtags']):
+        if Util.is_json(row['hashtags']):
             tweet_htags = json.loads(row['hashtags'])
             tr_htags_present = []
             for s in tweet_htags:
-                if SummaryStatsUtil.is_ascii(s):
+                if Util.is_ascii(s):
                     if s in tracking_hashtags:
                         tr_htags_present.append(s)
 
@@ -62,7 +62,7 @@ def get_num_unique_tweets_by_hashtag():
 def get_num_unique_tweets_by_location():
     #Number tweets by location
     sql_str = "select count(tweet_id), place from tweets group by place order by count(tweet_id) desc;"
-    res = SummaryStatsUtil.extract_data_into_df(sql_str)
+    res = Util.extract_data_into_df(sql_str)
     num_tweets_by_loc = json.dumps(dict(zip(list(res['place'].values), list(res['count(tweet_id)'].values))))
     return num_tweets_by_loc
 
@@ -70,16 +70,16 @@ def get_num_unique_tweets_by_location():
 def get_top_n_tweets_by_hashtag(n):
     #Top N tweets by #
     get_hashtags_sql_str = "select hashtags, text from tweets"
-    hashtags_df = SummaryStatsUtil.extract_data_into_df(get_hashtags_sql_str)
+    hashtags_df = Util.extract_data_into_df(get_hashtags_sql_str)
     tracking_hashtags = ['hashtag1', 'hashtag2']
     hashtags_tweet_text = {}
 
     for idx, row in hashtags_df.iterrows():
-        if SummaryStatsUtil.is_json(row['hashtags']):
+        if Util.is_json(row['hashtags']):
             tweet_htags = json.loads(row['hashtags'])
             tr_htags_present = []
             for s in tweet_htags:
-                if SummaryStatsUtil.is_ascii(s):
+                if Util.is_ascii(s):
                     if s in tracking_hashtags:
                         tr_htags_present.append([s, row['text']])
 
@@ -117,28 +117,28 @@ def write_summary_stats_to_files():
 
     fname_num_uniq_users_by_hashtag = 'results/summary_stats/num_uniq_users_by_hashtag_' + str(dt_now) + '.json'
     num_uniq_users_by_hashtag = get_num_unique_users_by_hashtag()
-    SummaryStatsUtil.write_file(fname_num_uniq_users_by_hashtag, num_uniq_users_by_hashtag)
+    Util.write_file(fname_num_uniq_users_by_hashtag, num_uniq_users_by_hashtag)
 
     fname_num_uniq_users_by_location = 'results/summary_stats/num_uniq_users_by_location_' + str(dt_now) + '.json'
     num_uniq_users_by_location = get_num_unique_users_by_location()
-    SummaryStatsUtil.write_file(fname_num_uniq_users_by_location, num_uniq_users_by_location)
+    Util.write_file(fname_num_uniq_users_by_location, num_uniq_users_by_location)
 
     fname_top_n_tweets_by_hashtag = 'results/summary_stats/top_n_tweets_by_hashtag_' + str(dt_now) + '.json'
     n = 5
     top_n_tweets_by_hashtag = get_top_n_tweets_by_hashtag(n)
-    SummaryStatsUtil.write_file(fname_top_n_tweets_by_hashtag, top_n_tweets_by_hashtag)
+    Util.write_file(fname_top_n_tweets_by_hashtag, top_n_tweets_by_hashtag)
 
     fname_num_uniq_tweets_by_hashtag = 'results/summary_stats/num_uniq_tweets_by_hashtag_' + str(dt_now) + '.json'
     num_uniq_tweets_by_hashtag = get_num_unique_tweets_by_hashtag()
-    SummaryStatsUtil.write_file(fname_num_uniq_tweets_by_hashtag, num_uniq_tweets_by_hashtag)
+    Util.write_file(fname_num_uniq_tweets_by_hashtag, num_uniq_tweets_by_hashtag)
 
     fname_num_uniq_tweets_by_location = 'results/summary_stats/num_uniq_tweets_by_location_' + str(dt_now) + '.json'
     num_uniq_tweets_by_location = get_num_unique_tweets_by_location()
-    SummaryStatsUtil.write_file(fname_num_uniq_tweets_by_location, num_uniq_tweets_by_location)
+    Util.write_file(fname_num_uniq_tweets_by_location, num_uniq_tweets_by_location)
 
     fname_rank_of_most_popular_hashtags = 'results/summary_stats/rank_of_most_popular_hashtags_' + str(dt_now) + '.json'
     rank_of_most_popular_hashtags = get_rank_of_most_popular_hashtags()
-    SummaryStatsUtil.write_file(fname_rank_of_most_popular_hashtags, rank_of_most_popular_hashtags)
+    Util.write_file(fname_rank_of_most_popular_hashtags, rank_of_most_popular_hashtags)
 
 
 if __name__ == '__main__':

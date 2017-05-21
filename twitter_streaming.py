@@ -66,7 +66,7 @@ def insert_tweet_data(data):
                              password=passwd,
                              port=port,
                              db=dbname,
-                             charset='utf8')
+                             charset='utf8mb4')
 
     try:
         with conn.cursor() as cursor:
@@ -90,7 +90,7 @@ def insert_user_data(data):
                              password=passwd,
                              port=port,
                              db=dbname,
-                             charset='utf8')
+                             charset='utf8mb4')
 
     try:
         with conn.cursor() as cursor:
