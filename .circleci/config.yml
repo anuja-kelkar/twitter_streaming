@@ -12,8 +12,8 @@ jobs:
       - python/install-deps
       - python/save-cache
       - run:
-          command: flake8
-          name: Lint
+          command: echo "Do something cool here."
+          name: Test message
 
 workflows:
   main:
